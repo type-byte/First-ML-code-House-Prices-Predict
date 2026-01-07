@@ -79,7 +79,7 @@ for a in area_vals:
         a_n = a / max_area
         r_n = r / max_room
         p_n = w1 * a_n + w2 * r_n + b
-        p = p_n * max_price
+        p = p_n
 
         area_grid.append(a)
         room_grid.append(r)
