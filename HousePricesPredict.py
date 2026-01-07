@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 data = []
 with open("housePricesDataset.csv", "r", encoding="utf-8") as f:
     header = f.readline()
@@ -60,6 +62,47 @@ for epoch in range(epochs):
             loss += (w1 * Xn[i][0] + w2 * Xn[i][1] + b - Yn[i]) ** 2
         loss /= n
         print(f"Эпоха {epoch}, ошибка {loss:.2f}")
+
+
+# ===== Визуализация =====
+
+areas_plot = areas
+rooms_plot = rooms
+prices_plot = Y
+
+area_vals = [min(areas_plot), max(areas_plot)]
+room_vals = [min(rooms_plot), max(rooms_plot)]
+
+area_grid = []
+room_grid = []
+price_grid = []
+
+for a in area_vals:
+    for r in room_vals:
+        a_n = a / max_area
+        r_n = r / max_room
+        p_n = w1 * a_n + w2 * r_n + b
+        p = p_n * max_price
+
+        area_grid.append(a)
+        room_grid.append(r)
+        price_grid.append(p)
+
+# 3D-график
+fig = plt.figure()
+ax = fig.add_subplot(111, projection="3d")
+
+ax.scatter(areas_plot, rooms_plot, prices_plot, label="Реальные данные")
+ax.plot_trisurf(area_grid, room_grid, price_grid, alpha=0.5)
+
+ax.set_xlabel("Площадь")
+ax.set_ylabel("Комнаты")
+ax.set_zlabel("Цена")
+
+plt.legend()
+plt.show()
+
+# ===== Конец Визуализации =====
 
 newArea, newRoom = map(int, input("Введите площадь и количество комнат интересующей квартиры: \n").split())
 
