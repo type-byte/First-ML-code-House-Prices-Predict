@@ -21,17 +21,14 @@ rooms = [x[1] for x in X]
 
 max_area = max(areas)
 max_room = max(rooms)
-max_price = max(Y)
 
 Xn = []
-Yn = []
 
 for i in range(len(X)):
     Xn.append([
         X[i][0] / max_area,
         X[i][1] / max_room
     ])
-    Yn.append(Y[i] / max_price)
 
 w1, w2, b = 0, 0, 0
 rate = 0.01
@@ -43,7 +40,7 @@ for epoch in range(epochs):
 
     for i in range(n):
         predPrice = w1 * Xn[i][0] + w2 * Xn[i][1] + b
-        error = predPrice - Yn[i]
+        error = predPrice - Y[i]
         dw1 += error * Xn[i][0]
         dw2 += error * Xn[i][1]
         db += error
@@ -59,7 +56,7 @@ for epoch in range(epochs):
     if epoch % 10 == 0:
         loss = 0
         for i in range(n):
-            loss += (w1 * Xn[i][0] + w2 * Xn[i][1] + b - Yn[i]) ** 2
+            loss += (w1 * Xn[i][0] + w2 * Xn[i][1] + b - Y[i]) ** 2
         loss /= n
         print(f"Эпоха {epoch}, ошибка {loss:.2f}")
 
@@ -109,7 +106,7 @@ newArea, newRoom = map(int, input("Введите площадь и количе
 newArea_n = newArea / max_area
 newRoom_n = newRoom / max_room
 
-priceNewPrediction = (w1 * newArea_n + w2 * newRoom_n + b) * max_price
+priceNewPrediction = w1 * newArea_n + w2 * newRoom_n + b
 
 
 print(f"Приблизительная стоимость квартиры будет составлять: {priceNewPrediction:.2f}")
